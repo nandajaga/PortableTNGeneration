@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<container name="root">
+	<container name="Environments">
+		<container name="ITV1">
+			<field name="url-NUMS" value="http://numsenv1/"></field>	
+			<field name="url-TAI" value="http://mmaeidc01-env1.idc1.level3.com:7011/lnp/"></field>										
+			<container name="yourApplicationLoginPage">
+				<container name="Valid">
+					<field name="tbx_username" value="U1171422" type="mandatory" />
+					<field name="tbx_password" value="Latam2018" type="mandatory" />					
+				</container>
+			</container>
+			
+			<container name="TAILoginPage">
+				<container name="Valid">
+					<field name="tbx_username" value="U1171422" type="mandatory" />
+					<field name="tbx_password" value="Latam2018" type="mandatory" />					
+				</container>
+			</container>
+			
+		</container>
+	</container>
+	<container name="CommonData">
+	</container>
+</container>
