@@ -332,6 +332,7 @@ public void ThousandTNS() throws IOException, InterruptedException{
 		}
 		System.out.println("**************************************************");
 		System.out.println("Please refer the sheet for TN details with name : " + sheetName);
+		System.out.println("Number of Portable TNs in the sheet is:: "+TNsList.size());
 		System.out.println("**************************************************");
 
 	}
@@ -406,7 +407,7 @@ public void ThousandTNS() throws IOException, InterruptedException{
 			BodyPart msgBodyPart = new MimeBodyPart();
 
 			// msgBodyPart.setContent(htmlText, "text/html");
-			String test = "Please find the attachement for Portable Telephone number details... "+"\n"+"Refer the sheet with name :" + sheetName;
+			String test = "Please find the attachement for Portable Telephone number details... "+"\n"+"Refer the sheet with name ::" + sheetName +"Number of Portable TNs in the sheet is:: "+TNsList.size();
 			msgBodyPart.setText(test);
 			Multipart multipart = new MimeMultipart();
 			multipart.addBodyPart(msgBodyPart);
