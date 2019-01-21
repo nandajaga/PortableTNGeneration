@@ -271,10 +271,10 @@ public void ThousandTNS() throws IOException, InterruptedException{
 		}
 
 		TAILoginPage.btn_Execute.click();
-		List<WebElement> Tairows1 = getDriver().findElements(By.xpath("//*[@id='mainform']//table[3]//tr"));
+/*		List<WebElement> Tairows1 = getDriver().findElements(By.xpath("//*[@id='mainform']//table[3]//tr"));
 		int Tairows = Tairows1.size();
-		System.out.println("Total Tairows =>" + Tairows);
-
+		System.out.println("Total Tairows =>" + Tairows);*/
+		storeTNvalues();
 		Random generator = new Random();
 		int randNo = generator.nextInt(100);
 		sheetName = "TNDataList" + Integer.toString(randNo);
@@ -288,7 +288,7 @@ public void ThousandTNS() throws IOException, InterruptedException{
 			reader.addColumn(sheetName, "InternalPort");
 			reader.addColumn(sheetName, "CarrierName");
 		}
-		for (int row = 3; row <= Tairows; row++) {
+		/*for (int row = 3; row <= Tairows; row++) {
 			System.out.println("******************");
 			System.out.println(row);
 			String actualXpath_TelephoneNo = TAILoginPage.BeforeXpath + row + TAILoginPage.TelephoneNoxpath;
@@ -318,15 +318,60 @@ public void ThousandTNS() throws IOException, InterruptedException{
 				reader.setCellData(sheetName, "InternalPort", row, InternalPort);
 				reader.setCellData(sheetName, "CarrierName", row, CarrierName);
 			}
-		}
+		}*/
 		
+		int storecount=0;
+		for(int row=2; row<=TNsList.size()+1;row++) {
+			reader.setCellData(sheetName, "TelephoneNumber", row, TelePhoneNoList.get(storecount));
+			reader.setCellData(sheetName, "Portable", row, TNsList.get(storecount));
+			reader.setCellData(sheetName, "Wireless", row, WirelessList.get(storecount));
+			reader.setCellData(sheetName, "InternalPort", row, InternalPortList.get(storecount));
+			reader.setCellData(sheetName, "CarrierName", row, CarrierNameList.get(storecount));
+			System.out.println("Writing data to Excel sheet......."+storecount);
+			storecount++;
+		}
 		System.out.println("**************************************************");
 		System.out.println("Please refer the sheet for TN details with name : " + sheetName);
 		System.out.println("**************************************************");
 
 	}
 
-	
+	public void storeTNvalues() {
+		List<WebElement> Tairows1 = getDriver().findElements(By.xpath("//*[@id='mainform']//table[3]//tr"));
+		int Tairows = Tairows1.size();
+		System.out.println("Total Tairows =>" + Tairows);
+		for (int row = 3; row <= Tairows; row++) {
+			System.out.println("******************");
+			System.out.println(row);
+			String actualXpath_TelephoneNo = TAILoginPage.BeforeXpath + row + TAILoginPage.TelephoneNoxpath;
+			String TelePhoneNo = getDriver().findElement(By.xpath(actualXpath_TelephoneNo)).getText();
+			System.out.println("Telephone Number :" + TelePhoneNo);
+
+			String actualXpath_Portable = TAILoginPage.BeforeXpath + row + TAILoginPage.PortableAfterXpath;
+			String Portable = getDriver().findElement(By.xpath(actualXpath_Portable)).getText();
+			System.out.println("Portable :" + Portable);
+
+			String actualXpath_Wireless = TAILoginPage.BeforeXpath + row + TAILoginPage.WirelessAfterXpath;
+			String Wireless = getDriver().findElement(By.xpath(actualXpath_Wireless)).getText();
+			System.out.println("Wireless :" + Wireless);
+
+			String actualXpath_InternalPort = TAILoginPage.BeforeXpath + row + TAILoginPage.InternalAfterXpath;
+			String InternalPort = getDriver().findElement(By.xpath(actualXpath_InternalPort)).getText();
+			System.out.println("InternalPort :" + InternalPort);
+
+			String actualXpath_carrierName = TAILoginPage.BeforeXpath + row + TAILoginPage.CarrierNameXpath;
+			String CarrierName = getDriver().findElement(By.xpath(actualXpath_carrierName)).getText();
+			System.out.println("Carrier Name :" + CarrierName);
+
+			if (Portable.equals("Y") && Wireless.equals("N") && InternalPort.equals("N")) {
+				TelePhoneNoList.add(TelePhoneNo);
+				TNsList.add(Portable);
+				WirelessList.add(Wireless);
+				InternalPortList.add(InternalPort);
+				CarrierNameList.add(CarrierName);
+			}
+		}
+	}
 	@Step
 	public void SendEmailhavingOrderDetails() {
 		DateFormat dfobj = new SimpleDateFormat("MM/dd/yyyy");
