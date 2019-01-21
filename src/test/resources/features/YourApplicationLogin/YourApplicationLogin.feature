@@ -13,7 +13,7 @@ Feature: I should be able to log in as different users to your application
     When I log in as a "Invalid" user
     Then I should be on Login Page
 
-    @1000TN
+    @ThousandTN
     Scenario: TO find out the range of BTNs which are portable or not
     Given I am in your application url
     When I log in as a "Valid" user
