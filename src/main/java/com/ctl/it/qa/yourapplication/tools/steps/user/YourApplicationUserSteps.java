@@ -97,17 +97,15 @@ public class YourApplicationUserSteps extends YourApplicationSteps {
 		action.moveToElement(NumsPage.lbl_Block).build().perform();
 		NumsPage.lbl_SearchLERG.click();
 		waitABit(2000);
-		//Scanner scan=new Scanner(System.in);
 		getDriver().switchTo().frame("main_frame");
 		NumsPage.btn_clear.click();
 		System.out.println("Enter NPA value :");
-		// String NPA=scan.nextLine();
 		//String NPA = reader.getCellData("NPANXX", "NPA", 2);
 		Random generator = new Random();
 		// generate a random integer from 0 to 899, then add 100
 		int randomNPA=generator.nextInt(900) + 100;
-		//NPA=Integer.toString(randomNPA);
-		NPA="561";
+		NPA=Integer.toString(randomNPA);
+		//NPA="561";
 		System.out.println("NPA value :"+NPA);
 		NumsPage.tbx_NPA.clear();
 		NumsPage.tbx_NPA.sendKeys(NPA);
@@ -115,8 +113,8 @@ public class YourApplicationUserSteps extends YourApplicationSteps {
 		
 		System.out.println("Enter NXX value :");
 		int randomNXX=generator.nextInt(900) + 100;
-		NXX="802";
-		//NXX=Integer.toString(randomNXX);
+		//NXX="802";
+		NXX=Integer.toString(randomNXX);
 		System.out.println("NXX value :"+NXX);
 		NumsPage.tbx_NXX.clear();
 		NumsPage.tbx_NXX.sendKeys(NXX);
