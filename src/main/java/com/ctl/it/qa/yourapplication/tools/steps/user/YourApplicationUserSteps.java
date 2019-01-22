@@ -1,13 +1,13 @@
 package com.ctl.it.qa.yourapplication.tools.steps.user;
 
-import net.thucydides.core.annotations.Step;
-
 import java.io.IOException;
-import java.net.InetAddress;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
+
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
@@ -22,22 +22,21 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
 import com.ctl.it.qa.staf.xml.reader.IntDataContainer;
-import com.ctl.it.qa.yourapplication.tools.pages.common.yourApplicationHomePage;
-import com.ctl.it.qa.yourapplication.tools.pages.common.yourApplicationLoginPage;
 import com.ctl.it.qa.yourapplication.tools.pages.common.NumsPage;
-import com.ctl.it.qa.yourapplication.tools.steps.YourApplicationSteps;
 import com.ctl.it.qa.yourapplication.tools.pages.common.TAILoginPage;
 import com.ctl.it.qa.yourapplication.tools.pages.common.Xls_Reader;
+import com.ctl.it.qa.yourapplication.tools.pages.common.yourApplicationHomePage;
+import com.ctl.it.qa.yourapplication.tools.pages.common.yourApplicationLoginPage;
+import com.ctl.it.qa.yourapplication.tools.steps.YourApplicationSteps;
+
+import net.serenitybdd.core.exceptions.SerenityManagedException;
+import net.thucydides.core.annotations.Step;
 
 @SuppressWarnings("serial")
 public class YourApplicationUserSteps extends YourApplicationSteps {
@@ -50,23 +49,25 @@ public class YourApplicationUserSteps extends YourApplicationSteps {
 	String TaiWindow;
 	int loop;
 	String sheetName;
-	List<String> blockbeginrange = new ArrayList<>();
-	List<String> blockendrange = new ArrayList<>();
+	List<String> blockbeginrange;
+	List<String> blockendrange; 
 	String NPA;
 	String NXX;
 	String TN;
 	String beginRange;
 	String EndRange;
 	String Number_of_Entries;
-	List<Integer> loop1=new ArrayList<>();
-	List<String> TNsList=new ArrayList<>();
-	List<String> WirelessList=new ArrayList<>();
-	List<String> InternalPortList=new ArrayList<>();	
-	List<String> CarrierNameList=new ArrayList<>();	
 	List<Long> originalTNs;
-	List<String> AssignedTNSentry=new ArrayList<>();
-	List<String> TelePhoneNoList=new ArrayList<>();
 	Xls_Reader reader = new Xls_Reader(System.getProperty("user.dir") + "//src//test//resources//TNData.xlsx");
+	List<Integer> loop1;
+	int totalTNS;
+	int counttotalTNS;
+	List<String> TNsList;
+	List<String> WirelessList;
+	List<String> InternalPortList;
+	List<String> CarrierNameList;
+	List<String> AssignedTNSentry;
+	List<String> TelePhoneNoList;
 
 	@Step
 	public void logs_in_as(String userType) {
@@ -93,6 +94,20 @@ public class YourApplicationUserSteps extends YourApplicationSteps {
 	}
 	
 	public void search() throws InterruptedException {
+		
+		/*try {
+			Actions action = new Actions(getDriver());
+			action.moveToElement(NumsPage.lbl_Block).build().perform();
+			NumsPage.lbl_SearchLERG.click();
+			waitABit(2000);
+			getDriver().switchTo().frame("main_frame");
+			NumsPage.btn_clear.click();
+			logs_in_as("Valid");
+		} catch (SerenityManagedException e) {
+			e.printStackTrace();
+			System.out.println("No session timeout");
+		}*/
+		
 		Actions action = new Actions(getDriver());
 		action.moveToElement(NumsPage.lbl_Block).build().perform();
 		NumsPage.lbl_SearchLERG.click();
@@ -100,20 +115,18 @@ public class YourApplicationUserSteps extends YourApplicationSteps {
 		getDriver().switchTo().frame("main_frame");
 		NumsPage.btn_clear.click();
 		System.out.println("Enter NPA value :");
-		//String NPA = reader.getCellData("NPANXX", "NPA", 2);
 		Random generator = new Random();
 		// generate a random integer from 0 to 899, then add 100
 		int randomNPA=generator.nextInt(900) + 100;
 		NPA=Integer.toString(randomNPA);
-		//NPA="561";
+		//NPA="705";
 		System.out.println("NPA value :"+NPA);
 		NumsPage.tbx_NPA.clear();
 		NumsPage.tbx_NPA.sendKeys(NPA);
-		//NumsPage.tbx_NPA.sendKeys("123");
 		
 		System.out.println("Enter NXX value :");
 		int randomNXX=generator.nextInt(900) + 100;
-		//NXX="802";
+		//NXX="250";
 		NXX=Integer.toString(randomNXX);
 		System.out.println("NXX value :"+NXX);
 		NumsPage.tbx_NXX.clear();
@@ -146,7 +159,8 @@ public class YourApplicationUserSteps extends YourApplicationSteps {
 
 		String after_xpath1 = "]//td[5]";
 		System.out.println("Total range of values=>" + row.size());
-
+		blockbeginrange = new ArrayList<>();
+		blockendrange = new ArrayList<>();
 		for (int i = 1; i <= row.size(); i++) {
 
 			beginRange = getDriver().findElement(By.xpath(before_xpath + i + after_xpath)).getText();
@@ -193,7 +207,9 @@ public class YourApplicationUserSteps extends YourApplicationSteps {
 
 		String after_xpath1 = "]//td[5]";
 		System.out.println("Total range of values=>" + row.size());
-
+		blockbeginrange = new ArrayList<>();
+		blockendrange = new ArrayList<>();
+		loop1=new ArrayList<>();
 		for (int i = 1; i <= row.size(); i++) {
 
 			beginRange = getDriver().findElement(By.xpath(before_xpath + i + after_xpath)).getText();
@@ -202,8 +218,8 @@ public class YourApplicationUserSteps extends YourApplicationSteps {
 			 EndRange = getDriver().findElement(By.xpath(before_xpath + i + after_xpath1)).getText();
 			System.out.println(i + "_" + "endRange: " + EndRange);
 			loop = Integer.parseInt(EndRange) - Integer.parseInt(beginRange);		
+			if(loop==9999) {
 			loop1.add(loop);
-			
 			System.out.println("TOtal Telephone numbers will be :" +loop);
 			String startRangePH = NPA + NXX + beginRange;
 			String EndRangePH = NPA + NXX + EndRange;
@@ -212,7 +228,7 @@ public class YourApplicationUserSteps extends YourApplicationSteps {
 			System.out.println(i + "_" + "EndRange :" + EndRangePH);
 			blockbeginrange.add(startRangePH);
 			blockendrange.add(EndRangePH);
-			
+			}
 		}
 		NUMSWindow = getDriver().getWindowHandle();
 		searchAssignedTNs(); 
@@ -255,7 +271,7 @@ public void TenThousandTNS() throws IOException, InterruptedException{
 		}
 	if(count>=blockbeginrange.size()) {
 			getDriver().switchTo().defaultContent();
-			NPA_NXX_values_and_store_the_values_in_sheet();
+			NPA_NXX_values_and_store_the_values_in_sheet_10000TNS();
 		}
 	
 }
@@ -278,13 +294,14 @@ public void TenThousandTNS() throws IOException, InterruptedException{
 		TAILoginPage.clickLogin();
 		TaiWindow = getDriver().getWindowHandle();
 		getDriver().findElement(By.linkText("Portability Analysis")).click();
-		checkAssignedTNs();
+		//checkAssignedTNs();
 		setTNValues(); //calling this in checkAssignedTNs()
 	}
 
 	public void searchAssignedTNs() {
 	
 	int count=0;
+	AssignedTNSentry=new ArrayList<>();
 	while(count<=blockbeginrange.size()-1) {
 	String NPA=blockbeginrange.get(count).substring(0, 3);
 	String NXX=blockbeginrange.get(count).substring(3, 6);
@@ -326,11 +343,11 @@ public void TenThousandTNS() throws IOException, InterruptedException{
 		}*/
 		
 	}
-	public void setTNValues() {
+	public void setTNValues() throws IOException, InterruptedException {
 		originalTNs = new ArrayList<>();
 		long s = Long.parseLong(TN);
-	//NNK	for (int row = 1; row <= loop + 1; row++) {
-			for (int row = 1; row <= 100; row++) {
+		for (int row = 1; row <= loop + 1; row++) {//nnk
+			//for (int row = 1; row <= 100; row++) {
 
 			originalTNs.add(s++);
 		}
@@ -341,10 +358,10 @@ public void TenThousandTNS() throws IOException, InterruptedException{
 		}
 
 		TAILoginPage.btn_Execute.click();
-/*		List<WebElement> Tairows1 = getDriver().findElements(By.xpath("//*[@id='mainform']//table[3]//tr"));
+		List<WebElement> Tairows1 = getDriver().findElements(By.xpath("//*[@id='mainform']//table[3]//tr"));
 		int Tairows = Tairows1.size();
-		System.out.println("Total Tairows =>" + Tairows);*/
-		storeTNvalues();
+		System.out.println("Total Tairows =>" + Tairows);
+		//storeTNvalues();
 		Random generator = new Random();
 		int randNo = generator.nextInt(100);
 		sheetName = "TNDataList" + Integer.toString(randNo);
@@ -358,7 +375,7 @@ public void TenThousandTNS() throws IOException, InterruptedException{
 			reader.addColumn(sheetName, "InternalPort");
 			reader.addColumn(sheetName, "CarrierName");
 		}
-		int storecount=0;
+		/*int storecount=0;
 		for(int row=2; row<=TNsList.size()+1;row++) {
 			reader.setCellData(sheetName, "TelephoneNumber", row, TelePhoneNoList.get(storecount));
 			reader.setCellData(sheetName, "Portable", row, TNsList.get(storecount));
@@ -367,8 +384,8 @@ public void TenThousandTNS() throws IOException, InterruptedException{
 			reader.setCellData(sheetName, "CarrierName", row, CarrierNameList.get(storecount));
 			System.out.println("Writing data to Excel sheet......."+storecount);
 			storecount++;
-		}
-		/*for (int row = 3; row <= Tairows; row++) {
+		}*/
+		for (int row = 3; row <= Tairows; row++) {
 			System.out.println("******************");
 			System.out.println(row);
 			String actualXpath_TelephoneNo = TAILoginPage.BeforeXpath + row + TAILoginPage.TelephoneNoxpath;
@@ -398,22 +415,30 @@ public void TenThousandTNS() throws IOException, InterruptedException{
 				reader.setCellData(sheetName, "InternalPort", row, InternalPort);
 				reader.setCellData(sheetName, "CarrierName", row, CarrierName);
 			}
-		}*/
+		}
 		
 		
 		System.out.println("**************************************************");
 		System.out.println("Please refer the sheet for TN details with name : " + sheetName);
-		System.out.println("Number of Portable TNs in the sheet is:: "+TNsList.size());
+		//totalTNS=reader.getRowCount(sheetName);
+		//totalTNS=totalTNS-1;
+		//System.out.println("Number of Portable TNs in the sheet is:: "+totalTNS);
 		System.out.println("**************************************************");
 
+		check1000TnsinSheet();
 	}
 
 	public void storeTNvalues() {
 		List<WebElement> Tairows1 = getDriver().findElements(By.xpath("//*[@id='mainform']//table[3]//tr"));
 		int Tairows = Tairows1.size();
+	    TNsList=new ArrayList<>();
+		WirelessList=new ArrayList<>();
+		InternalPortList=new ArrayList<>();	
+		CarrierNameList=new ArrayList<>();	
+	    TelePhoneNoList=new ArrayList<>();
 		System.out.println("Total Tairows =>" + Tairows);
-	//NNK	for (int row = 3; row <= Tairows; row++) {
-			for (int row = 3; row <= 100; row++) {
+	  	for (int row = 3; row <= Tairows; row++) {
+			//for (int row = 3; row <= 100; row++) {
 			System.out.println("******************");
 			System.out.println(row);
 			String actualXpath_TelephoneNo = TAILoginPage.BeforeXpath + row + TAILoginPage.TelephoneNoxpath;
@@ -446,24 +471,91 @@ public void TenThousandTNS() throws IOException, InterruptedException{
 		}
 	}
 	
-	public void check1000TnsinSheet() {
-		//int sizeofTn=reader.getRowCount(sheetName);
-		int sizeofTn=TNsList.size();
-		
-		int count=1;
-		if(sizeofTn!=15) {
-		//if(NumberOfTns!=999) { //as per arraylist size 999 means it is 1000 
-			count=count+sizeofTn;
-			while(count<=15) {//change 15 to 999
-				String oldTN=TN;
-				if(!AssignedTNSentry.get(count).equals("0 entries found")) {
-					//if(TN=blockbeginrange.get(count))
-
-				}
-			}
+	public void check1000TnsinSheet() throws IOException, InterruptedException {
+		totalTNS=reader.getRowCount(sheetName);
+		totalTNS=totalTNS-1;
+		counttotalTNS=totalTNS;
+		while(counttotalTNS!=10000) { //nnk
+			getDriver().switchTo().window(NUMSWindow);
+			NPA_NXX_values_and_store_the_values_in_sheet_10000TNS();
+			setTNvalues_secondtime();
 		}
-		
-		
+		System.out.println("counttotalTNS ::::"+counttotalTNS);
+		counttotalTNS++;
+		System.out.println("**************************************************");
+		System.out.println("Please refer the sheet for TN details with name : " + sheetName);
+		totalTNS=reader.getRowCount(sheetName);
+		totalTNS=totalTNS-1;
+		System.out.println("Number of Portable TNs in the sheet is:: "+totalTNS);
+		System.out.println("**************************************************");
+	}
+	
+	@Step
+	public void setTNvalues_secondtime() {
+		originalTNs = new ArrayList<>();
+		long s = Long.parseLong(TN);
+		for (int row = 1; row <= 10000-totalTNS ; row++) { //nnk
+			originalTNs.add(s++);
+		}
+		getDriver().switchTo().window(TaiWindow);
+		TAILoginPage.tbx_TN.clear();
+		for (Long s1 : originalTNs) {
+			TAILoginPage.tbx_TN.sendKeys(s1 + "\n");
+		}
+
+		TAILoginPage.btn_Execute.click();
+		List<WebElement> Tairows1 = getDriver().findElements(By.xpath("//*[@id='mainform']//table[3]//tr"));
+		int Tairows = Tairows1.size();
+		System.out.println("Total Tairows =>" + Tairows);
+
+		/*storeTNvalues();
+
+		int storecount = 0;
+		for (int row = totalTNS+1; row <= TNsList.size()+1; row++) {
+			reader.setCellData(sheetName, "TelephoneNumber", row, TelePhoneNoList.get(storecount));
+			reader.setCellData(sheetName, "Portable", row, TNsList.get(storecount));
+			reader.setCellData(sheetName, "Wireless", row, WirelessList.get(storecount));
+			reader.setCellData(sheetName, "InternalPort", row, InternalPortList.get(storecount));
+			reader.setCellData(sheetName, "CarrierName", row, CarrierNameList.get(storecount));
+			System.out.println("Writing data to Excel sheet......." + storecount);
+			storecount++;
+		}*/
+		int storecount=totalTNS+1;
+		for (int row =3; row <= Tairows; row++) {
+			System.out.println("******************");
+			System.out.println(row);
+			String actualXpath_TelephoneNo = TAILoginPage.BeforeXpath + row + TAILoginPage.TelephoneNoxpath;
+			String TelePhoneNo = getDriver().findElement(By.xpath(actualXpath_TelephoneNo)).getText();
+			System.out.println("Telephone Number :" + TelePhoneNo);
+
+			String actualXpath_Portable = TAILoginPage.BeforeXpath + row + TAILoginPage.PortableAfterXpath;
+			String Portable = getDriver().findElement(By.xpath(actualXpath_Portable)).getText();
+			System.out.println("Portable :" + Portable);
+
+			String actualXpath_Wireless = TAILoginPage.BeforeXpath + row + TAILoginPage.WirelessAfterXpath;
+			String Wireless = getDriver().findElement(By.xpath(actualXpath_Wireless)).getText();
+			System.out.println("Wireless :" + Wireless);
+
+			String actualXpath_InternalPort = TAILoginPage.BeforeXpath + row + TAILoginPage.InternalAfterXpath;
+			String InternalPort = getDriver().findElement(By.xpath(actualXpath_InternalPort)).getText();
+			System.out.println("InternalPort :" + InternalPort);
+
+			String actualXpath_carrierName = TAILoginPage.BeforeXpath + row + TAILoginPage.CarrierNameXpath;
+			String CarrierName = getDriver().findElement(By.xpath(actualXpath_carrierName)).getText();
+			System.out.println("Carrier Name :" + CarrierName);
+
+			if (Portable.equals("Y") && Wireless.equals("N") && InternalPort.equals("N")) {
+				reader.setCellData(sheetName, "TelephoneNumber", storecount, TelePhoneNo);
+				reader.setCellData(sheetName, "Portable", storecount, Portable);
+				reader.setCellData(sheetName, "Wireless", storecount, Wireless);
+				reader.setCellData(sheetName, "InternalPort", storecount, InternalPort);
+				reader.setCellData(sheetName, "CarrierName", storecount, CarrierName);
+			}
+			storecount++;
+		}
+		totalTNS=reader.getRowCount(sheetName);
+		totalTNS=totalTNS-1;
+		counttotalTNS=totalTNS;
 	}
 	@Step
 	public void SendEmailhavingOrderDetails() {
@@ -499,7 +591,7 @@ public void TenThousandTNS() throws IOException, InterruptedException{
 			BodyPart msgBodyPart = new MimeBodyPart();
 
 			// msgBodyPart.setContent(htmlText, "text/html");
-			String test = "Please find the attachement for Portable Telephone number details... "+"\n"+"Refer the sheet with name ::" + sheetName +""+", Number of Portable TNs in the sheet is:: "+TNsList.size();
+			String test = "Please find the attachement for Portable Telephone number details... "+"\n"+"Refer the sheet with name ::" + sheetName +""+", Number of Portable TNs in the sheet is:: "+totalTNS;
 			msgBodyPart.setText(test);
 			Multipart multipart = new MimeMultipart();
 			multipart.addBodyPart(msgBodyPart);
