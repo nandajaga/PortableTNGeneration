@@ -171,11 +171,79 @@ public class YourApplicationUserSteps extends YourApplicationSteps {
 		searchAssignedTNs(); 
 		ThousandTNS();
 	}
+	
+	public void NPA_NXX_values_and_store_the_values_in_sheet_10000TNS() throws IOException, InterruptedException {
+		search();
+		while(true) {
+		if (Number_of_Entries.equals("0 entries found")) {
+			System.out.println(
+					"Number of entries found for the entered NPA NXX is : " + Number_of_Entries);
+			System.out.println("Try again with other values of NPA and NXX");
+			//System.exit(0);
+			search();
+		}else {
+			break;
+		}
+		}
+		getDriver().switchTo().frame("main_frame");
+		List<WebElement> row = getDriver().findElements(By.xpath("//table[@class='tableBase']//tbody//tr"));
+
+		String before_xpath = "//table[@class='tableBase']//tbody//tr[";
+		String after_xpath = "]//td[4]";
+
+		String after_xpath1 = "]//td[5]";
+		System.out.println("Total range of values=>" + row.size());
+
+		for (int i = 1; i <= row.size(); i++) {
+
+			beginRange = getDriver().findElement(By.xpath(before_xpath + i + after_xpath)).getText();
+			System.out.println(i + "_" + "beginRange: " + beginRange);
+
+			 EndRange = getDriver().findElement(By.xpath(before_xpath + i + after_xpath1)).getText();
+			System.out.println(i + "_" + "endRange: " + EndRange);
+			loop = Integer.parseInt(EndRange) - Integer.parseInt(beginRange);		
+			loop1.add(loop);
+			
+			System.out.println("TOtal Telephone numbers will be :" +loop);
+			String startRangePH = NPA + NXX + beginRange;
+			String EndRangePH = NPA + NXX + EndRange;
+
+			System.out.println(i + "_" + "StartRange :" + startRangePH);
+			System.out.println(i + "_" + "EndRange :" + EndRangePH);
+			blockbeginrange.add(startRangePH);
+			blockendrange.add(EndRangePH);
+			
+		}
+		NUMSWindow = getDriver().getWindowHandle();
+		searchAssignedTNs(); 
+		TenThousandTNS();
+	}
 public void ThousandTNS() throws IOException, InterruptedException{
 	int count=0;
 	closeloop:
 	while(count<=blockbeginrange.size()-1){
 		if(loop1.get(count)==999) {
+			if(AssignedTNSentry.get(count).equals("0 entries found")) {
+				TN=blockbeginrange.get(count);
+				System.out.println(":::::::::::::"+TN+"::::::::::::::::");
+				break closeloop;
+			}
+		}
+		count++;
+
+		}
+	if(count>=blockbeginrange.size()) {
+			getDriver().switchTo().defaultContent();
+			NPA_NXX_values_and_store_the_values_in_sheet();
+		}
+	
+}
+
+public void TenThousandTNS() throws IOException, InterruptedException{
+	int count=0;
+	closeloop:
+	while(count<=blockbeginrange.size()-1){
+		if(loop1.get(count)==9999) {
 			if(AssignedTNSentry.get(count).equals("0 entries found")) {
 				TN=blockbeginrange.get(count);
 				System.out.println(":::::::::::::"+TN+"::::::::::::::::");
@@ -261,7 +329,9 @@ public void ThousandTNS() throws IOException, InterruptedException{
 	public void setTNValues() {
 		originalTNs = new ArrayList<>();
 		long s = Long.parseLong(TN);
-		for (int row = 1; row <= loop + 1; row++) {
+	//NNK	for (int row = 1; row <= loop + 1; row++) {
+			for (int row = 1; row <= 100; row++) {
+
 			originalTNs.add(s++);
 		}
 		getDriver().switchTo().window(TaiWindow);
@@ -287,6 +357,16 @@ public void ThousandTNS() throws IOException, InterruptedException{
 			reader.addColumn(sheetName, "Wireless");
 			reader.addColumn(sheetName, "InternalPort");
 			reader.addColumn(sheetName, "CarrierName");
+		}
+		int storecount=0;
+		for(int row=2; row<=TNsList.size()+1;row++) {
+			reader.setCellData(sheetName, "TelephoneNumber", row, TelePhoneNoList.get(storecount));
+			reader.setCellData(sheetName, "Portable", row, TNsList.get(storecount));
+			reader.setCellData(sheetName, "Wireless", row, WirelessList.get(storecount));
+			reader.setCellData(sheetName, "InternalPort", row, InternalPortList.get(storecount));
+			reader.setCellData(sheetName, "CarrierName", row, CarrierNameList.get(storecount));
+			System.out.println("Writing data to Excel sheet......."+storecount);
+			storecount++;
 		}
 		/*for (int row = 3; row <= Tairows; row++) {
 			System.out.println("******************");
@@ -320,16 +400,7 @@ public void ThousandTNS() throws IOException, InterruptedException{
 			}
 		}*/
 		
-		int storecount=0;
-		for(int row=2; row<=TNsList.size()+1;row++) {
-			reader.setCellData(sheetName, "TelephoneNumber", row, TelePhoneNoList.get(storecount));
-			reader.setCellData(sheetName, "Portable", row, TNsList.get(storecount));
-			reader.setCellData(sheetName, "Wireless", row, WirelessList.get(storecount));
-			reader.setCellData(sheetName, "InternalPort", row, InternalPortList.get(storecount));
-			reader.setCellData(sheetName, "CarrierName", row, CarrierNameList.get(storecount));
-			System.out.println("Writing data to Excel sheet......."+storecount);
-			storecount++;
-		}
+		
 		System.out.println("**************************************************");
 		System.out.println("Please refer the sheet for TN details with name : " + sheetName);
 		System.out.println("Number of Portable TNs in the sheet is:: "+TNsList.size());
@@ -341,7 +412,8 @@ public void ThousandTNS() throws IOException, InterruptedException{
 		List<WebElement> Tairows1 = getDriver().findElements(By.xpath("//*[@id='mainform']//table[3]//tr"));
 		int Tairows = Tairows1.size();
 		System.out.println("Total Tairows =>" + Tairows);
-		for (int row = 3; row <= Tairows; row++) {
+	//NNK	for (int row = 3; row <= Tairows; row++) {
+			for (int row = 3; row <= 100; row++) {
 			System.out.println("******************");
 			System.out.println(row);
 			String actualXpath_TelephoneNo = TAILoginPage.BeforeXpath + row + TAILoginPage.TelephoneNoxpath;
@@ -373,6 +445,26 @@ public void ThousandTNS() throws IOException, InterruptedException{
 			}
 		}
 	}
+	
+	public void check1000TnsinSheet() {
+		//int sizeofTn=reader.getRowCount(sheetName);
+		int sizeofTn=TNsList.size();
+		
+		int count=1;
+		if(sizeofTn!=15) {
+		//if(NumberOfTns!=999) { //as per arraylist size 999 means it is 1000 
+			count=count+sizeofTn;
+			while(count<=15) {//change 15 to 999
+				String oldTN=TN;
+				if(!AssignedTNSentry.get(count).equals("0 entries found")) {
+					//if(TN=blockbeginrange.get(count))
+
+				}
+			}
+		}
+		
+		
+	}
 	@Step
 	public void SendEmailhavingOrderDetails() {
 		DateFormat dfobj = new SimpleDateFormat("MM/dd/yyyy");
@@ -399,15 +491,15 @@ public void ThousandTNS() throws IOException, InterruptedException{
 
 			msg.setFrom(new InternetAddress(from));
 
-			msg.setRecipients(Message.RecipientType.TO,InternetAddress.parse("nnanda.kumar@CenturyLink.com, Praveen.K.Chinni@centurylink.com, Suman.Banka@centurylink.com, Dhilliswararao.Seepana@centurylink.com"));
-			//msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse("nnanda.kumar@CenturyLink.com"));
+			//msg.setRecipients(Message.RecipientType.TO,InternetAddress.parse("nnanda.kumar@CenturyLink.com, Praveen.K.Chinni@centurylink.com, Suman.Banka@centurylink.com, Dhilliswararao.Seepana@centurylink.com"));
+			msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse("nnanda.kumar@CenturyLink.com"));
 			msg.setSubject(subject);
 			// MimeMultipart multipart = new MimeMultipart("related");
 
 			BodyPart msgBodyPart = new MimeBodyPart();
 
 			// msgBodyPart.setContent(htmlText, "text/html");
-			String test = "Please find the attachement for Portable Telephone number details... "+"\n"+"Refer the sheet with name ::" + sheetName +"Number of Portable TNs in the sheet is:: "+TNsList.size();
+			String test = "Please find the attachement for Portable Telephone number details... "+"\n"+"Refer the sheet with name ::" + sheetName +""+", Number of Portable TNs in the sheet is:: "+TNsList.size();
 			msgBodyPart.setText(test);
 			Multipart multipart = new MimeMultipart();
 			multipart.addBodyPart(msgBodyPart);

@@ -35,12 +35,20 @@ public class UserStepDefinition {
 	        endUser.should_be_on_login_page();
 	    }
 	    
-	    @Then("^i need to input range of NPA and NXX and search$")
-	    public void i_need_to_input_range_of_NPA_and_NXX_and_search() throws IOException, InterruptedException {
+	    @Then("^i need to input range of NPA and NXX and search for 1000TNs$")
+	    public void i_need_to_input_range_of_npa_and_nxx_and_search_for_1000tns() throws IOException, InterruptedException {
 	     endUser.NPA_NXX_values_and_store_the_values_in_sheet();
+	    // endUser.ThousandTNS();
+
 	    }
 
+	    @Then("^i need to input range of NPA and NXX and search for 10000TNs$")
+	    public void i_need_to_input_range_of_npa_and_nxx_and_search_for_10000tns() throws IOException, InterruptedException {
+	    // endUser.NPA_NXX_values_and_store_the_values_in_sheet();
+	     //endUser.TenThousandTNS();
+	    endUser.NPA_NXX_values_and_store_the_values_in_sheet_10000TNS();
 
+	    }
 	    @Then("^in TAI check for the range of BTNs is Portable or not$")
 	    public void in_TAI_check_for_the_range_of_BTNs_is_Portable_or_not() throws InterruptedException, IOException {
 	    	endUser.TAI_login_check_PortableTN();

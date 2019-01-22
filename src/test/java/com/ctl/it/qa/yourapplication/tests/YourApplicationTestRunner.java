@@ -29,7 +29,7 @@ import cucumber.api.CucumberOptions;
 		
 		monochrome = true,
 	
-		tags={"@NPA_NXX"}
+		tags={"@10000TNs"}
 		
 		        )
 
