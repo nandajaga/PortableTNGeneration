@@ -169,8 +169,8 @@ public class YourApplicationUserSteps extends YourApplicationSteps {
 			 EndRange = getDriver().findElement(By.xpath(before_xpath + i + after_xpath1)).getText();
 			System.out.println(i + "_" + "endRange: " + EndRange);
 			loop = Integer.parseInt(EndRange) - Integer.parseInt(beginRange);		
+			if(loop==999) {
 			loop1.add(loop);
-			
 			System.out.println("TOtal Telephone numbers will be :" +loop);
 			String startRangePH = NPA + NXX + beginRange;
 			String EndRangePH = NPA + NXX + EndRange;
@@ -179,7 +179,7 @@ public class YourApplicationUserSteps extends YourApplicationSteps {
 			System.out.println(i + "_" + "EndRange :" + EndRangePH);
 			blockbeginrange.add(startRangePH);
 			blockendrange.add(EndRangePH);
-			
+			}
 		}
 		NUMSWindow = getDriver().getWindowHandle();
 		searchAssignedTNs(); 
@@ -424,8 +424,11 @@ public void TenThousandTNS() throws IOException, InterruptedException{
 		//totalTNS=totalTNS-1;
 		//System.out.println("Number of Portable TNs in the sheet is:: "+totalTNS);
 		System.out.println("**************************************************");
-
-		check1000TnsinSheet();
+		if(loop==999) {
+			check1000TnsinSheet();
+		}else if(loop==9999) {
+		check10000TnsinSheet();
+		}
 	}
 
 	public void storeTNvalues() {
@@ -475,6 +478,25 @@ public void TenThousandTNS() throws IOException, InterruptedException{
 		totalTNS=reader.getRowCount(sheetName);
 		totalTNS=totalTNS-1;
 		counttotalTNS=totalTNS;
+		while(counttotalTNS!=1000) { //nnk
+			getDriver().switchTo().window(NUMSWindow);
+			NPA_NXX_values_and_store_the_values_in_sheet_10000TNS();
+			setTNvalues_secondtime();
+		}
+		System.out.println("counttotalTNS ::::"+counttotalTNS);
+		counttotalTNS++;
+		System.out.println("**************************************************");
+		System.out.println("Please refer the sheet for TN details with name : " + sheetName);
+		totalTNS=reader.getRowCount(sheetName);
+		totalTNS=totalTNS-1;
+		System.out.println("Number of Portable TNs in the sheet is:: "+totalTNS);
+		System.out.println("**************************************************");
+	}
+	
+	public void check10000TnsinSheet() throws IOException, InterruptedException {
+		totalTNS=reader.getRowCount(sheetName);
+		totalTNS=totalTNS-1;
+		counttotalTNS=totalTNS;
 		while(counttotalTNS!=10000) { //nnk
 			getDriver().switchTo().window(NUMSWindow);
 			NPA_NXX_values_and_store_the_values_in_sheet_10000TNS();
@@ -494,8 +516,14 @@ public void TenThousandTNS() throws IOException, InterruptedException{
 	public void setTNvalues_secondtime() {
 		originalTNs = new ArrayList<>();
 		long s = Long.parseLong(TN);
-		for (int row = 1; row <= 10000-totalTNS ; row++) { //nnk
-			originalTNs.add(s++);
+		if (loop == 999) {
+			for (int row = 1; row <= 1000 - totalTNS; row++) { // nnk
+				originalTNs.add(s++);
+			}
+		} else if (loop == 9999) {
+			for (int row = 1; row <= 10000 - totalTNS; row++) { // nnk
+				originalTNs.add(s++);
+			}
 		}
 		getDriver().switchTo().window(TaiWindow);
 		TAILoginPage.tbx_TN.clear();
