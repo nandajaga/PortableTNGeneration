@@ -586,7 +586,7 @@ public void TenThousandTNS() throws IOException, InterruptedException{
 			BodyPart msgBodyPart = new MimeBodyPart();
 
 			// msgBodyPart.setContent(htmlText, "text/html");
-			String test = "Please find the attachement for Portable Telephone number details... "+"\n"+"Refer the sheet with name ::" + " ' "+sheetName +" '"+", Number of Portable TNs in the sheet is:: "+totalTNS;
+			String test = "Please find the attachement for Portable Telephone number details... "+"\n"+"Refer the sheet with name ::" + " ' "+sheetName +" '"+", Number of Portable TNs in the sheet is["+totalTNS+"]";
 			msgBodyPart.setText(test);
 			Multipart multipart = new MimeMultipart();
 			multipart.addBodyPart(msgBodyPart);
