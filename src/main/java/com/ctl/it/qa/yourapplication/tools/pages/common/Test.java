@@ -1,5 +1,7 @@
 package com.ctl.it.qa.yourapplication.tools.pages.common;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Test {
@@ -11,19 +13,16 @@ public class Test {
 		//int randomNPA=generator.nextInt(900) + 100;
 		//System.out.println(randomNPA);
 		
-		
-	
-		int count=0;
-		while(count<=3){
-			if(999!=999) {
-				System.out.println("Test");
-				break;
-			}
-			count++;
+		Xls_Reader reader = new Xls_Reader(System.getProperty("user.dir") + "//src//test//resources//TNData.xlsx");
 
+		System.out.println(reader.getRowCount("TNDataList48")-1);
+		int s=0;
+		List<Integer> lis=new ArrayList<>();
+		for (int row = 1; row <= 10; row++) { 
+			//should be 11 or 1001
+			lis.add(row);
+			System.out.println(s++);
 		}
-		 if(count>=4) {
-				System.out.println("1");
-			}
+		
 	}
 }

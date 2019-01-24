@@ -18,9 +18,15 @@ public class NumsPage extends yourApplicationPage {
 	@FindBy(xpath = "//div[contains(@id,'oCMenu_blockMenu')]")
 	public WebElementFacade lbl_Block;
 	
+	
+	@FindBy(linkText = "Return To NuMS")
+	public WebElementFacade lnk_ReturntoNums;
+	
 	@FindBy(id = "oCMenu_searchNumbers")
 	public WebElementFacade lbl_SearchLERG;
 	
+	@FindBy(xpath = "//div[contains(@id,'logout')]")
+	public WebElementFacade btn_Signout;
 	
 	@FindBy(name = "npa")
 	public WebElementFacade tbx_NPA;
