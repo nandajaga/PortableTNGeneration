@@ -578,8 +578,8 @@ public void TenThousandTNS() throws IOException, InterruptedException{
 
 			msg.setFrom(new InternetAddress(from));
 
-			//msg.setRecipients(Message.RecipientType.TO,InternetAddress.parse("nnanda.kumar@CenturyLink.com, Praveen.K.Chinni@centurylink.com, Suman.Banka@centurylink.com, Dhilliswararao.Seepana@centurylink.com"));
-			msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse("nnanda.kumar@CenturyLink.com"));
+			msg.setRecipients(Message.RecipientType.TO,InternetAddress.parse("nnanda.kumar@CenturyLink.com, Praveen.K.Chinni@centurylink.com, Suman.Banka@centurylink.com, Dhilliswararao.Seepana@centurylink.com"));
+			//msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse("nnanda.kumar@CenturyLink.com"));
 			msg.setSubject(subject);
 			// MimeMultipart multipart = new MimeMultipart("related");
 
