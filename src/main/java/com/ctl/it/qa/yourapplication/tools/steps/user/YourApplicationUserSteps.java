@@ -382,6 +382,8 @@ public void TenThousandTNS() throws IOException, InterruptedException{
 				reader.setCellData(sheetName, "Wireless", sheetrow, Wireless);
 				reader.setCellData(sheetName, "InternalPort", sheetrow, InternalPort);
 				reader.setCellData(sheetName, "CarrierName", sheetrow, CarrierName);
+			}else {
+				sheetrow=sheetrow-1;
 			}
 			sheetrow++;
 			System.out.println("sheet row number :"+ sheetrow);
@@ -550,6 +552,8 @@ public void TenThousandTNS() throws IOException, InterruptedException{
 				reader.setCellData(sheetName, "Wireless", storecount, Wireless);
 				reader.setCellData(sheetName, "InternalPort", storecount, InternalPort);
 				reader.setCellData(sheetName, "CarrierName", storecount, CarrierName);
+			}else {
+				storecount=storecount-1;
 			}
 			storecount++;
 		}
@@ -585,8 +589,8 @@ public void TenThousandTNS() throws IOException, InterruptedException{
 
 			msg.setFrom(new InternetAddress(from));
 
-			msg.setRecipients(Message.RecipientType.TO,InternetAddress.parse("nnanda.kumar@CenturyLink.com, Praveen.K.Chinni@centurylink.com, Suman.Banka@centurylink.com, Dhilliswararao.Seepana@centurylink.com"));
-			//msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse("nnanda.kumar@CenturyLink.com"));
+			//msg.setRecipients(Message.RecipientType.TO,InternetAddress.parse("nnanda.kumar@CenturyLink.com, Praveen.K.Chinni@centurylink.com, Suman.Banka@centurylink.com, Dhilliswararao.Seepana@centurylink.com"));
+			msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse("nnanda.kumar@CenturyLink.com"));
 			msg.setSubject(subject);
 			// MimeMultipart multipart = new MimeMultipart("related");
 
