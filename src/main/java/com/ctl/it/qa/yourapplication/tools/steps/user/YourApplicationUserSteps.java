@@ -105,14 +105,14 @@ public class YourApplicationUserSteps extends YourApplicationSteps {
 		// generate a random integer from 0 to 899, then add 100
 		int randomNPA=generator.nextInt(900) + 100;
 		NPA=Integer.toString(randomNPA);
-		//NPA="914";
+		//NPA="651";
 		System.out.println("NPA value :"+NPA);
 		NumsPage.tbx_NPA.clear();
 		NumsPage.tbx_NPA.sendKeys(NPA);
 		
 		System.out.println("Enter NXX value :");
 		int randomNXX=generator.nextInt(900) + 100;
-		//NXX="874";
+		//NXX="367";
 		NXX=Integer.toString(randomNXX);
 		System.out.println("NXX value :"+NXX);
 		NumsPage.tbx_NXX.clear();
@@ -372,6 +372,9 @@ public void TenThousandTNS() throws IOException, InterruptedException{
 			String actualXpath_carrierName = TAILoginPage.BeforeXpath + row + TAILoginPage.CarrierNameXpath;
 			String CarrierName = getDriver().findElement(By.xpath(actualXpath_carrierName)).getText();
 			System.out.println("Carrier Name :" + CarrierName);
+			if(row==3 && Portable.equals("N")) {
+				break ;
+			}
 
 			if (Portable.equals("Y") && Wireless.equals("N") && InternalPort.equals("N")) {
 				reader.setCellData(sheetName, "TelephoneNumber", sheetrow, TelePhoneNo);
@@ -403,7 +406,8 @@ public void TenThousandTNS() throws IOException, InterruptedException{
 		totalTNS=totalTNS-1;
 		counttotalTNS=totalTNS;
 		int c=1;
-		while(c<counttotalTNS) {
+		while(true) {
+		//while(c<counttotalTNS) {
 		//while(counttotalTNS!=1000) { //nnk
 			totalTNS=reader.getRowCount(sheetName);
 			totalTNS=totalTNS-1;
@@ -417,11 +421,11 @@ public void TenThousandTNS() throws IOException, InterruptedException{
 				NumsPage.lnk_ReturntoNums.click();
 
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 				System.out.println("Exception occured");
-				
+			
 			}
+			getDriver().get(envData.getFieldValue("url-NUMS"));
 			IntDataContainer dataContainer = envData.getContainer(yourApplicationLoginPage.getClass().getSimpleName())
 					.getContainer("Valid");
 			fillFields(yourApplicationLoginPage, dataContainer.getMandatoryFieldsFromAllContainers());
@@ -536,7 +540,10 @@ public void TenThousandTNS() throws IOException, InterruptedException{
 			String actualXpath_carrierName = TAILoginPage.BeforeXpath + row + TAILoginPage.CarrierNameXpath;
 			String CarrierName = getDriver().findElement(By.xpath(actualXpath_carrierName)).getText();
 			System.out.println("Carrier Name :" + CarrierName);
-
+			
+			if(row==3 && Portable.equals("N")) {
+				break ;
+			}
 			if (Portable.equals("Y") && Wireless.equals("N") && InternalPort.equals("N")) {
 				reader.setCellData(sheetName, "TelephoneNumber", storecount, TelePhoneNo);
 				reader.setCellData(sheetName, "Portable", storecount, Portable);
