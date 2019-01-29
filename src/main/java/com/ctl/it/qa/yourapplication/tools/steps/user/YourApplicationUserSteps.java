@@ -410,7 +410,6 @@ public void TenThousandTNS() throws IOException, InterruptedException{
 		int c=1;
 		while(true) {
 		//while(c<counttotalTNS) {
-		//while(counttotalTNS!=1000) { //nnk
 			totalTNS=reader.getRowCount(sheetName);
 			totalTNS=totalTNS-1;
 			counttotalTNS=totalTNS;
@@ -440,7 +439,6 @@ public void TenThousandTNS() throws IOException, InterruptedException{
 			}
 		
 		}
-		c++;
 		System.out.println("counttotalTNS ::::"+counttotalTNS);
 		System.out.println("**************************************************");
 		System.out.println("Please refer the sheet for TN details with name : " + sheetName);
@@ -454,29 +452,39 @@ public void TenThousandTNS() throws IOException, InterruptedException{
 		totalTNS=reader.getRowCount(sheetName);
 		totalTNS=totalTNS-1;
 		counttotalTNS=totalTNS;
-		while(counttotalTNS!=10000) { //nnk
+		int c=1;
+		while(true) {
+		//while(c<counttotalTNS) {
+			totalTNS=reader.getRowCount(sheetName);
+			totalTNS=totalTNS-1;
+			counttotalTNS=totalTNS;
+		if(counttotalTNS<10000) { //nnk
 			getDriver().switchTo().window(NUMSWindow);
+			NumsPage.btn_Signout.click();	
+			getDriver().switchTo().frame("main_frame");
 			try {
-				NumsPage.btn_Signout.click();
-				IntDataContainer dataContainer = envData.getContainer(yourApplicationLoginPage.getClass().getSimpleName())
-						.getContainer("Valid");
-				fillFields(yourApplicationLoginPage, dataContainer.getMandatoryFieldsFromAllContainers());
-				yourApplicationLoginPage.clickLogin();
-				/*Actions action = new Actions(getDriver());
-				action.moveToElement(NumsPage.lbl_Block).build().perform();
-				NumsPage.lbl_SearchLERG.click();
 				waitABit(2000);
-				getDriver().switchTo().frame("main_frame");
-				NumsPage.btn_clear.click();*/
-			} catch (SerenityManagedException e) {
+				NumsPage.lnk_ReturntoNums.click();
+
+			} catch (Exception e) {
 				e.printStackTrace();
-				System.out.println("No session timeout");
+				System.out.println("Exception occured");
+			
 			}
+			getDriver().get(envData.getFieldValue("url-NUMS"));
+			IntDataContainer dataContainer = envData.getContainer(yourApplicationLoginPage.getClass().getSimpleName())
+					.getContainer("Valid");
+			fillFields(yourApplicationLoginPage, dataContainer.getMandatoryFieldsFromAllContainers());
+			yourApplicationLoginPage.clickLogin();
+			getDriver().switchTo().defaultContent();
 			NPA_NXX_values_and_store_the_values_in_sheet_10000TNS();
 			setTNvalues_secondtime();
+			}else {
+				break;
+			}
+		
 		}
 		System.out.println("counttotalTNS ::::"+counttotalTNS);
-		counttotalTNS++;
 		System.out.println("**************************************************");
 		System.out.println("Please refer the sheet for TN details with name : " + sheetName);
 		totalTNS=reader.getRowCount(sheetName);
@@ -589,8 +597,8 @@ public void TenThousandTNS() throws IOException, InterruptedException{
 
 			msg.setFrom(new InternetAddress(from));
 
-			//msg.setRecipients(Message.RecipientType.TO,InternetAddress.parse("nnanda.kumar@CenturyLink.com, Praveen.K.Chinni@centurylink.com, Suman.Banka@centurylink.com, Dhilliswararao.Seepana@centurylink.com"));
-			msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse("nnanda.kumar@CenturyLink.com"));
+			msg.setRecipients(Message.RecipientType.TO,InternetAddress.parse("nnanda.kumar@CenturyLink.com, Praveen.K.Chinni@centurylink.com, Suman.Banka@centurylink.com, Dhilliswararao.Seepana@centurylink.com"));
+			//msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse("nnanda.kumar@CenturyLink.com"));
 			msg.setSubject(subject);
 			// MimeMultipart multipart = new MimeMultipart("related");
 
