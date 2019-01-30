@@ -309,6 +309,7 @@ public void TenThousandTNS() throws IOException, InterruptedException{
 		}
 }
 	
+	@SuppressWarnings("unused")
 	public void setTNValues() throws IOException, InterruptedException {
 		originalTNs = new ArrayList<>();
 		long s = Long.parseLong(TN);
@@ -317,24 +318,7 @@ public void TenThousandTNS() throws IOException, InterruptedException{
 
 			originalTNs.add(s++);
 		}
-		getDriver().switchTo().window(TaiWindow);
-		TAILoginPage.tbx_TN.clear();
-		for (Long s1 : originalTNs) {
-			TAILoginPage.tbx_TN.sendKeys(s1 + "\n");
-		}
-
-		TAILoginPage.btn_Execute.click();
 		
-		(new WebDriverWait(getDriver(), 10000)).until(new ExpectedCondition<WebElement>() {
-			@Override
-			public WebElement apply(WebDriver d) {
-				return d.findElement(By.xpath("//*[@id='mainform']//table[3]//tr[3]//td[1]"));
-			}
-		});
-		
-		List<WebElement> Tairows1 = getDriver().findElements(By.xpath("//*[@id='mainform']//table[3]//tr"));
-		int Tairows = Tairows1.size();
-		System.out.println("Total Tairows =>" + Tairows);
 		Random generator = new Random();
 		int randNo = generator.nextInt(100);
 		sheetName = "TNDataList" + Integer.toString(randNo);
@@ -348,6 +332,33 @@ public void TenThousandTNS() throws IOException, InterruptedException{
 			reader.addColumn(sheetName, "CarrierName");
 			
 		}
+		getDriver().switchTo().window(TaiWindow);
+		
+		//get fist row text , check for other rows only if 1st row is Y.
+		TAILoginPage.tbx_TN.clear();
+		long test=originalTNs.get(0);
+		TAILoginPage.tbx_TN.sendKeys(Long.toString(test));
+		TAILoginPage.btn_Execute.click();
+        WebElement tn=getDriver().findElement(By.xpath("//*[@id='mainform']/table[3]/tbody/tr[3]/td[2]"));
+     
+		if(tn.getText().equals("Y")) {
+		TAILoginPage.tbx_TN.clear();
+		for (Long s1 : originalTNs) {
+			TAILoginPage.tbx_TN.sendKeys(s1 + "\n");
+		}
+
+		TAILoginPage.btn_Execute.click();
+		
+		(new WebDriverWait(getDriver(), 50000)).until(new ExpectedCondition<WebElement>() {
+			@Override
+			public WebElement apply(WebDriver d) {
+				return d.findElement(By.xpath("//*[@id='mainform']//table[3]//tr[3]//td[1]"));
+			}
+		});
+		
+		List<WebElement> Tairows1 = getDriver().findElements(By.xpath("//*[@id='mainform']//table[3]//tr"));
+		int Tairows = Tairows1.size();
+		System.out.println("Total Tairows =>" + Tairows);
 		
 		int sheetrow=2;
 		for (int row = 3; row <= Tairows; row++) {
@@ -389,6 +400,7 @@ public void TenThousandTNS() throws IOException, InterruptedException{
 			System.out.println("sheet row number :"+ sheetrow);
 		}
 		
+		}
 		
 		System.out.println("**************************************************");
 		System.out.println("Please refer the sheet for TN details with name : " + sheetName);
@@ -396,11 +408,13 @@ public void TenThousandTNS() throws IOException, InterruptedException{
 		totalTNS=totalTNS-1;
 		System.out.println("Number of Portable TNs in the sheet is 1st time:: "+totalTNS);
 		System.out.println("**************************************************");
+		
 		if(loop==999) {
 			check1000TnsinSheet();
 		}else if(loop==9999) {
 		check10000TnsinSheet();
 		}
+		
 	}
 	
 	public void check1000TnsinSheet() throws IOException, InterruptedException {
@@ -509,6 +523,14 @@ public void TenThousandTNS() throws IOException, InterruptedException{
 			}
 		}
 		getDriver().switchTo().window(TaiWindow);
+		
+		TAILoginPage.tbx_TN.clear();
+		long test=originalTNs.get(0);
+		TAILoginPage.tbx_TN.sendKeys(Long.toString(test));
+		TAILoginPage.btn_Execute.click();
+        WebElement tn=getDriver().findElement(By.xpath("//*[@id='mainform']/table[3]/tbody/tr[3]/td[2]"));
+     
+		if(tn.getText().equals("Y")) {
 		TAILoginPage.tbx_TN.clear();
 		for (Long s1 : originalTNs) {
 			TAILoginPage.tbx_TN.sendKeys(s1 + "\n");
@@ -516,7 +538,7 @@ public void TenThousandTNS() throws IOException, InterruptedException{
 
 		TAILoginPage.btn_Execute.click();
 		
-		(new WebDriverWait(getDriver(), 10000)).until(new ExpectedCondition<WebElement>() {
+		(new WebDriverWait(getDriver(), 50000)).until(new ExpectedCondition<WebElement>() {
 			@Override
 			public WebElement apply(WebDriver d) {
 				return d.findElement(By.xpath("//*[@id='mainform']//table[3]//tr[3]//td[1]"));
@@ -564,6 +586,7 @@ public void TenThousandTNS() throws IOException, InterruptedException{
 				storecount=storecount-1;
 			}
 			storecount++;
+		}
 		}
 		totalTNS=reader.getRowCount(sheetName);
 		totalTNS=totalTNS-1;
