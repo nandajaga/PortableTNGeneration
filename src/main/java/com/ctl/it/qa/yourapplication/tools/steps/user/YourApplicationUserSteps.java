@@ -352,6 +352,16 @@ public void TenThousandTNS() throws IOException, InterruptedException{
 
 		TAILoginPage.btn_Execute.click();
 		
+		int c=0;
+		while(c<1000) {
+		if(getDriver().findElement(By.xpath("//*[@id='mainform']//table[3]//tr[3]//td[1]")).isDisplayed()) {
+			break;
+		}else {
+			Thread.sleep(60000);
+			c++;
+		}
+		}
+		
 		(new WebDriverWait(getDriver(), 9000000)).until(new ExpectedCondition<WebElement>() {
 			@Override
 			public WebElement apply(WebDriver d) {
@@ -512,7 +522,7 @@ public void TenThousandTNS() throws IOException, InterruptedException{
 	}
 	
 	@Step
-	public void setTNvalues_secondtime() {
+	public void setTNvalues_secondtime() throws InterruptedException {
 		originalTNs = new ArrayList<>();
 		long s = Long.parseLong(TN);
 		if (loop == 999) {
@@ -544,6 +554,15 @@ public void TenThousandTNS() throws IOException, InterruptedException{
 			TAILoginPage.tbx_TN.sendKeys(s1 + "\n");
 		}
 
+		int c=0;
+		while(c<1000) {
+		if(getDriver().findElement(By.xpath("//*[@id='mainform']//table[3]//tr[3]//td[1]")).isDisplayed()) {
+			break;
+		}else {
+			Thread.sleep(60000);
+			c++;
+		}
+		}
 		TAILoginPage.btn_Execute.click();
 		(new WebDriverWait(getDriver(), 9000000)).until(new ExpectedCondition<WebElement>() {
 			@Override
@@ -627,7 +646,7 @@ public void TenThousandTNS() throws IOException, InterruptedException{
 
 			msg.setFrom(new InternetAddress(from));
 
-			msg.setRecipients(Message.RecipientType.TO,InternetAddress.parse("nnanda.kumar@CenturyLink.com, Praveen.K.Chinni@centurylink.com, Suman.Banka@centurylink.com, Dhilliswararao.Seepana@centurylink.com"));
+			msg.setRecipients(Message.RecipientType.TO,InternetAddress.parse("nnanda.kumar@CenturyLink.com, Praveen.K.Chinni@centurylink.com, Suman.Banka@centurylink.com, Dhilliswararao.Seepana@centurylink.com, heather.cox@centurylink.com, suma.pujari@centurylink.com, Keith.Lamle@CenturyLink.com "));
 			//msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse("nnanda.kumar@CenturyLink.com"));
 			msg.setSubject(subject);
 			// MimeMultipart multipart = new MimeMultipart("related");
