@@ -28,6 +28,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.ctl.it.qa.staf.xml.reader.IntDataContainer;
@@ -319,10 +320,12 @@ public void TenThousandTNS() throws IOException, InterruptedException{
 			originalTNs.add(s++);
 		}
 		
-		Random generator = new Random();
+		/*Random generator = new Random();
 		int randNo = generator.nextInt(100);
 		sheetName = "TNDataList" + Integer.toString(randNo);
-		System.out.println("##################" + sheetName + "##################");
+		System.out.println("##################" + sheetName + "##################");*/
+		sheetName = "TNDataList";
+		reader.removeSheet("TNDataList");
 		if (!reader.isSheetExist(sheetName)) {
 			reader.addSheet(sheetName);
 			reader.addColumn(sheetName, "TelephoneNumber");
@@ -349,7 +352,7 @@ public void TenThousandTNS() throws IOException, InterruptedException{
 
 		TAILoginPage.btn_Execute.click();
 		
-		(new WebDriverWait(getDriver(), 50000)).until(new ExpectedCondition<WebElement>() {
+		(new WebDriverWait(getDriver(), 9000000)).until(new ExpectedCondition<WebElement>() {
 			@Override
 			public WebElement apply(WebDriver d) {
 				return d.findElement(By.xpath("//*[@id='mainform']//table[3]//tr[3]//td[1]"));
@@ -427,7 +430,8 @@ public void TenThousandTNS() throws IOException, InterruptedException{
 			totalTNS=reader.getRowCount(sheetName);
 			totalTNS=totalTNS-1;
 			counttotalTNS=totalTNS;
-		if(counttotalTNS<1000) { //nnk
+			//if(counttotalTNS<10) { //nnk
+			if(counttotalTNS<1000) { //nnk
 			getDriver().switchTo().window(NUMSWindow);
 			NumsPage.btn_Signout.click();	
 			getDriver().switchTo().frame("main_frame");
@@ -512,13 +516,13 @@ public void TenThousandTNS() throws IOException, InterruptedException{
 		originalTNs = new ArrayList<>();
 		long s = Long.parseLong(TN);
 		if (loop == 999) {
-			//for (int row = 0; row < 20 - totalTNS; row++) { // nnk
+			//for (int row = 0; row < 10 - totalTNS; row++) { // nnk
 			for (int row = 1; row <= 1000 - totalTNS; row++) { // nnk
 	
 				originalTNs.add(s++);
 			}
 		} else if (loop == 9999) {
-			for (int row = 0; row <= 10000 - totalTNS; row++) { // nnk
+			for (int row = 1; row <= 10000 - totalTNS; row++) { // nnk
 				originalTNs.add(s++);
 			}
 		}
@@ -530,15 +534,18 @@ public void TenThousandTNS() throws IOException, InterruptedException{
 		TAILoginPage.btn_Execute.click();
         WebElement tn=getDriver().findElement(By.xpath("//*[@id='mainform']/table[3]/tbody/tr[3]/td[2]"));
      
-		if(tn.getText().equals("Y")) {
-		TAILoginPage.tbx_TN.clear();
+		if (tn.getText().equals("Y")) {
+			getDriver().get(envData.getFieldValue("url-TAI"));
+			TaiWindow = getDriver().getWindowHandle();
+			getDriver().findElement(By.linkText("Portability Analysis")).click();
+			TAILoginPage.tbx_TN.clear();
+
 		for (Long s1 : originalTNs) {
 			TAILoginPage.tbx_TN.sendKeys(s1 + "\n");
 		}
 
 		TAILoginPage.btn_Execute.click();
-		
-		(new WebDriverWait(getDriver(), 50000)).until(new ExpectedCondition<WebElement>() {
+		(new WebDriverWait(getDriver(), 9000000)).until(new ExpectedCondition<WebElement>() {
 			@Override
 			public WebElement apply(WebDriver d) {
 				return d.findElement(By.xpath("//*[@id='mainform']//table[3]//tr[3]//td[1]"));
