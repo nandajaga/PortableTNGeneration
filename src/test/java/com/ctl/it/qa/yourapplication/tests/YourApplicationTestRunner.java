@@ -12,7 +12,7 @@ import com.ctl.it.qa.staf.TestEnvironment;
 import com.ctl.it.qa.staf.SplunkLogger;
 import cucumber.api.CucumberOptions;
 
-@TestEnvironment(Environment.ITV2)
+@TestEnvironment(Environment.ITV1)
 @RunWith(CucumberWithSerenity.class)
 @CucumberOptions(
     
