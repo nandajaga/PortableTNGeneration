@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -67,6 +68,8 @@ public class YourApplicationUserSteps extends YourApplicationSteps {
 	int totalTNS;
 	int counttotalTNS;
 	List<String> AssignedTNSentry;
+	 
+	
 
 	@Step
 	public void logs_in_as(String userType) {
@@ -105,16 +108,16 @@ public class YourApplicationUserSteps extends YourApplicationSteps {
 		Random generator = new Random();
 		// generate a random integer from 0 to 899, then add 100
 		int randomNPA=generator.nextInt(900) + 100;
-		NPA=Integer.toString(randomNPA);
-		//NPA="651";
+		//NPA=Integer.toString(randomNPA);
+		NPA="714";
 		System.out.println("NPA value :"+NPA);
 		NumsPage.tbx_NPA.clear();
 		NumsPage.tbx_NPA.sendKeys(NPA);
 		
 		System.out.println("Enter NXX value :");
 		int randomNXX=generator.nextInt(900) + 100;
-		//NXX="367";
-		NXX=Integer.toString(randomNXX);
+		NXX="412";
+		//NXX=Integer.toString(randomNXX);
 		System.out.println("NXX value :"+NXX);
 		NumsPage.tbx_NXX.clear();
 		NumsPage.tbx_NXX.sendKeys(NXX);
@@ -346,12 +349,14 @@ public void TenThousandTNS() throws IOException, InterruptedException{
      
 		if(tn.getText().equals("Y")) {
 		TAILoginPage.tbx_TN.clear();
-		for (Long s1 : originalTNs) {
+		/*for (Long s1 : originalTNs) {
 			TAILoginPage.tbx_TN.sendKeys(s1 + "\n");
-		}
+		}*/
+		getDriver().manage().timeouts().pageLoadTimeout(900000, TimeUnit.SECONDS);
 
 		TAILoginPage.btn_Execute.click();
-		
+	
+
 		int c=0;
 		while(c<1000) {
 		if(getDriver().findElement(By.xpath("//*[@id='mainform']//table[3]//tr[3]//td[1]")).isDisplayed()) {
@@ -550,20 +555,22 @@ public void TenThousandTNS() throws IOException, InterruptedException{
 			getDriver().findElement(By.linkText("Portability Analysis")).click();
 			TAILoginPage.tbx_TN.clear();
 
-		for (Long s1 : originalTNs) {
+		/*for (Long s1 : originalTNs) {
 			TAILoginPage.tbx_TN.sendKeys(s1 + "\n");
-		}
-
+		}*/
+	
+		TAILoginPage.btn_Execute.click();
+		getDriver().manage().timeouts().pageLoadTimeout(90000000, TimeUnit.SECONDS);
 		int c=0;
 		while(c<1000) {
 		if(getDriver().findElement(By.xpath("//*[@id='mainform']//table[3]//tr[3]//td[1]")).isDisplayed()) {
 			break;
 		}else {
 			Thread.sleep(60000);
+			System.out.println("wait:::::::"+c);
 			c++;
 		}
 		}
-		TAILoginPage.btn_Execute.click();
 		(new WebDriverWait(getDriver(), 9000000)).until(new ExpectedCondition<WebElement>() {
 			@Override
 			public WebElement apply(WebDriver d) {
@@ -646,8 +653,8 @@ public void TenThousandTNS() throws IOException, InterruptedException{
 
 			msg.setFrom(new InternetAddress(from));
 
-			msg.setRecipients(Message.RecipientType.TO,InternetAddress.parse("nnanda.kumar@CenturyLink.com, Praveen.K.Chinni@centurylink.com, Suman.Banka@centurylink.com, Dhilliswararao.Seepana@centurylink.com, heather.cox@centurylink.com, suma.pujari@centurylink.com, Keith.Lamle@CenturyLink.com "));
-			//msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse("nnanda.kumar@CenturyLink.com"));
+			//msg.setRecipients(Message.RecipientType.TO,InternetAddress.parse("nnanda.kumar@CenturyLink.com, Praveen.K.Chinni@centurylink.com, Suman.Banka@centurylink.com, Dhilliswararao.Seepana@centurylink.com, heather.cox@centurylink.com, suma.pujari@centurylink.com, Keith.Lamle@CenturyLink.com "));
+			msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse("nnanda.kumar@CenturyLink.com"));
 			msg.setSubject(subject);
 			// MimeMultipart multipart = new MimeMultipart("related");
 
