@@ -103,16 +103,16 @@ public class YourApplicationUserSteps extends YourApplicationSteps {
 		Random generator = new Random();
 		// generate a random integer from 0 to 899, then add 100
 		int randomNPA = generator.nextInt(900) + 100;
-	    NPA=Integer.toString(randomNPA);
-		//NPA = "714";
+		NPA = Integer.toString(randomNPA);
+		// NPA = "714";
 		System.out.println("NPA value :" + NPA);
 		NumsPage.tbx_NPA.clear();
 		NumsPage.tbx_NPA.sendKeys(NPA);
 
 		System.out.println("Enter NXX value :");
 		int randomNXX = generator.nextInt(900) + 100;
-		//NXX = "412";
-		NXX=Integer.toString(randomNXX);
+		// NXX = "412";
+		NXX = Integer.toString(randomNXX);
 		System.out.println("NXX value :" + NXX);
 		NumsPage.tbx_NXX.clear();
 		NumsPage.tbx_NXX.sendKeys(NXX);
@@ -345,9 +345,11 @@ public class YourApplicationUserSteps extends YourApplicationSteps {
 			TaiWindow = getDriver().getWindowHandle();
 			getDriver().findElement(By.linkText("Portability Analysis")).click();
 			TAILoginPage.tbx_TN.clear();
-			/*
-			 * for (Long s1 : originalTNs) { TAILoginPage.tbx_TN.sendKeys(s1 + "\n"); }
-			 */
+
+			for (Long s1 : originalTNs) {
+				TAILoginPage.tbx_TN.sendKeys(s1 + "\n");
+			}
+
 			getDriver().manage().timeouts().pageLoadTimeout(900000, TimeUnit.SECONDS);
 
 			TAILoginPage.btn_Execute.click();
