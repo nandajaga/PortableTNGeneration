@@ -36,10 +36,10 @@ public class TAILoginPage extends yourApplicationPage {
 	public WebElementFacade btn_Execute;
 
 	@FindBy(xpath = "//*[@id='mainform']/table[3]/tbody/tr[3]/td[2]")
-	public WebElementFacade lbl_PortableText;
+	public WebElementFacade lbl_Portable;
 
 	@FindBy(xpath = "//*[@id='mainform']/table[3]/tbody/tr[3]/td[3]")
-	public WebElementFacade lbl_WirelessText;
+	public WebElementFacade lbl_Wireless;
 
 	@FindBy(xpath = "//*[@id='mainform']/table[3]/tbody/tr[3]/td[4]")
 	public WebElementFacade lbl_InternalPort;
