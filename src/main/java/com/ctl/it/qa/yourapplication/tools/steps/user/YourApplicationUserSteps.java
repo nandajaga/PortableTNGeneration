@@ -637,15 +637,11 @@ public class YourApplicationUserSteps extends YourApplicationSteps {
 		try {
 
 			msg.setFrom(new InternetAddress(from));
-			//msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(
+		//	msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(
 			//		"nnanda.kumar@CenturyLink.com, Praveen.K.Chinni@centurylink.com, Suman.Banka@centurylink.com,Dhilliswararao.Seepana@centurylink.com, heather.cox@centurylink.com, suma.pujari@centurylink.com, Keith.Lamle@CenturyLink.com ,dawn.kolb@centurylink.com, Narendra.Marikale2@CenturyLink.com, Vivek.Jain@CenturyLink.com, bob.carlson@centurylink.com, Venky.Shanmugam@CenturyLink.com, matt.voytko@centurylink.com, kendal.armstrong@centurylink.com, sevrin.huff@centurylink.com"));
 		    msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse("nnanda.kumar@CenturyLink.com"));
 			msg.setSubject(subject);
-			// MimeMultipart multipart = new MimeMultipart("related");
-
 			BodyPart msgBodyPart = new MimeBodyPart();
-
-			// msgBodyPart.setContent(htmlText, "text/html");
 			String test = "Please find the attachement for Portable Telephone number details... " + "\n"
 					+ "Refer the sheet with name ::" + " ' " + sheetName + " '"
 					+ ", Number of Portable TNs in the sheet is[" + totalTNS + "]";
