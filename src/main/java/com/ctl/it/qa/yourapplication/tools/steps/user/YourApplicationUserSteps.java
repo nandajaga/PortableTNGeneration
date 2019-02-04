@@ -104,14 +104,14 @@ public class YourApplicationUserSteps extends YourApplicationSteps {
 		// generate a random integer from 0 to 899, then add 100
 		int randomNPA = generator.nextInt(900) + 100;
 		NPA = Integer.toString(randomNPA);
-		// NPA = "714";
+		//NPA = "714";
 		System.out.println("NPA value :" + NPA);
 		NumsPage.tbx_NPA.clear();
 		NumsPage.tbx_NPA.sendKeys(NPA);
 
 		System.out.println("Enter NXX value :");
 		int randomNXX = generator.nextInt(900) + 100;
-		// NXX = "412";
+	    //NXX = "412";
 		NXX = Integer.toString(randomNXX);
 		System.out.println("NXX value :" + NXX);
 		NumsPage.tbx_NXX.clear();
@@ -309,8 +309,8 @@ public class YourApplicationUserSteps extends YourApplicationSteps {
 	public void setTNValues() throws IOException, InterruptedException {
 		originalTNs = new ArrayList<>();
 		long s = Long.parseLong(TN);
-		for (int row = 1; row <= loop + 1; row++) {// nnk
-			// for (int row = 1; row <= 10; row++) {
+		//for (int row = 1; row <= loop + 1; row++) {// nnk
+			 for (int row = 1; row <= 100; row++) {
 
 			originalTNs.add(s++);
 		}
@@ -350,9 +350,15 @@ public class YourApplicationUserSteps extends YourApplicationSteps {
 				TAILoginPage.tbx_TN.sendKeys(s1 + "\n");
 			}
 
-			getDriver().manage().timeouts().pageLoadTimeout(900000, TimeUnit.SECONDS);
-
-			TAILoginPage.btn_Execute.click();
+			try {
+				TAILoginPage.btn_Execute.click();
+				WaitForPageToLoad(360000);
+			} catch (org.openqa.selenium.TimeoutException e) {
+				e.printStackTrace();
+				System.out.println("Time out exception ");
+				TAILoginPage.btn_Execute.click();
+				WaitForPageToLoad(360000);
+				}			
 			waitForPageToLoad();
 
 			(new WebDriverWait(getDriver(), 9000000)).until(new ExpectedCondition<WebElement>() {
@@ -429,8 +435,8 @@ public class YourApplicationUserSteps extends YourApplicationSteps {
 			totalTNS = reader.getRowCount(sheetName);
 			totalTNS = totalTNS - 1;
 			counttotalTNS = totalTNS;
-			// if(counttotalTNS<10) { //nnk
-			if (counttotalTNS < 1000) { // nnk
+			 if(counttotalTNS<100) { //nnk
+			//if (counttotalTNS < 1000) { // nnk
 				getDriver().switchTo().window(NUMSWindow);
 				NumsPage.btn_Signout.click();
 				getDriver().switchTo().frame("main_frame");
@@ -514,8 +520,8 @@ public class YourApplicationUserSteps extends YourApplicationSteps {
 		originalTNs = new ArrayList<>();
 		long s = Long.parseLong(TN);
 		if (loop == 999) {
-			// for (int row = 0; row < 10 - totalTNS; row++) { // nnk
-			for (int row = 1; row <= 1000 - totalTNS; row++) { // nnk
+			 for (int row = 0; row < 100 - totalTNS; row++) { // nnk
+			//for (int row = 1; row <= 1000 - totalTNS; row++) { // nnk
 
 				originalTNs.add(s++);
 			}
@@ -541,11 +547,17 @@ public class YourApplicationUserSteps extends YourApplicationSteps {
 			for (Long s1 : originalTNs) {
 				TAILoginPage.tbx_TN.sendKeys(s1 + "\n");
 			}
-			getDriver().manage().timeouts().pageLoadTimeout(9000000, TimeUnit.SECONDS);
-			TAILoginPage.btn_Execute.click();
+			try {
+				TAILoginPage.btn_Execute.click();
+				WaitForPageToLoad(360000);
+			} catch (org.openqa.selenium.TimeoutException e) {
+				e.printStackTrace();
+				System.out.println("Time out exception ");
+				TAILoginPage.btn_Execute.click();
+				WaitForPageToLoad(360000);
+				}
+			
 			waitForPageToLoad();
-			getDriver().manage().timeouts().pageLoadTimeout(9000000, TimeUnit.SECONDS);
-
 			(new WebDriverWait(getDriver(), 900000)).until(new ExpectedCondition<WebElement>() {
 				@Override
 				public WebElement apply(WebDriver d) {
@@ -625,12 +637,9 @@ public class YourApplicationUserSteps extends YourApplicationSteps {
 		try {
 
 			msg.setFrom(new InternetAddress(from));
-
-			// msg.setRecipients(Message.RecipientType.TO,InternetAddress.parse("nnanda.kumar@CenturyLink.com,
-			// Praveen.K.Chinni@centurylink.com, Suman.Banka@centurylink.com,
-			// Dhilliswararao.Seepana@centurylink.com, heather.cox@centurylink.com,
-			// suma.pujari@centurylink.com, Keith.Lamle@CenturyLink.com "));
-			msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse("nnanda.kumar@CenturyLink.com"));
+			//msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(
+			//		"nnanda.kumar@CenturyLink.com, Praveen.K.Chinni@centurylink.com, Suman.Banka@centurylink.com,Dhilliswararao.Seepana@centurylink.com, heather.cox@centurylink.com, suma.pujari@centurylink.com, Keith.Lamle@CenturyLink.com ,dawn.kolb@centurylink.com, Narendra.Marikale2@CenturyLink.com, Vivek.Jain@CenturyLink.com, bob.carlson@centurylink.com, Venky.Shanmugam@CenturyLink.com, matt.voytko@centurylink.com, kendal.armstrong@centurylink.com, sevrin.huff@centurylink.com"));
+		    msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse("nnanda.kumar@CenturyLink.com"));
 			msg.setSubject(subject);
 			// MimeMultipart multipart = new MimeMultipart("related");
 
