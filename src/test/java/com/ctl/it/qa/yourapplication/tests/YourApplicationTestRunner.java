@@ -12,7 +12,7 @@ import com.ctl.it.qa.staf.TestEnvironment;
 import com.ctl.it.qa.staf.SplunkLogger;
 import cucumber.api.CucumberOptions;
 
-@TestEnvironment(Environment.ITV1)
+@TestEnvironment(Environment.ITV2)
 @RunWith(CucumberWithSerenity.class)
 @CucumberOptions(
     
@@ -29,7 +29,7 @@ import cucumber.api.CucumberOptions;
 		
 		monochrome = true,
 	
-		tags={"@10000TNs"}
+		tags={"@1000TNs"}
 		
 		        )
 
