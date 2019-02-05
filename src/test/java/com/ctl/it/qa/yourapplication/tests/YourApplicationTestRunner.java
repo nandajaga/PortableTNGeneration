@@ -29,7 +29,7 @@ import cucumber.api.CucumberOptions;
 		
 		monochrome = true,
 	
-		tags={"@1000TNs"}
+		tags={"@10000TNs"}
 		
 		        )
 
