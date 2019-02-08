@@ -56,6 +56,12 @@ public class UserStepDefinition {
 	    
 	    @Then("^I send TN details in an email$")
 	    public void i_send_TN_details_in_an_email() throws Throwable {
-			endUser.SendEmailhavingOrderDetails();
+			endUser.SendEmailhavingOrderDetails1();
+			//SendEmailhavingOrderDetails();
+	    }
+	    
+	    @Then("^copy the data sheet to shared directory$")
+	    public void copy_the_data_sheet_to_shared_directory() throws IOException {
+	    	endUser.copysheet();
 	    }
 }

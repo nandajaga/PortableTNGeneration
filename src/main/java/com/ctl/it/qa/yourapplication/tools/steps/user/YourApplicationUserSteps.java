@@ -1,12 +1,17 @@
 package com.ctl.it.qa.yourapplication.tools.steps.user;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.DateFormat;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.TimeZone;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -22,6 +27,9 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -66,6 +74,8 @@ public class YourApplicationUserSteps extends YourApplicationSteps {
 	int totalTNS;
 	int counttotalTNS;
 	List<String> AssignedTNSentry;
+	String copiedsheetName;
+	String shareddirectorypath="//ellwp0167dm4//dub2kfil009//GROUP//APPS//DATA//sxkum64//PortableTNDatasheet";
 
 	@Step
 	public void logs_in_as(String userType) {
@@ -73,6 +83,8 @@ public class YourApplicationUserSteps extends YourApplicationSteps {
 				.getContainer(userType);
 		fillFields(yourApplicationLoginPage, dataContainer.getMandatoryFieldsFromAllContainers());
 		yourApplicationLoginPage.clickLogin();
+		String name=System.getProperty("Name");
+		System.out.println("Name from jenkins :"+name);
 	}
 
 	public void is_in_your_application_login_page() {
@@ -103,16 +115,16 @@ public class YourApplicationUserSteps extends YourApplicationSteps {
 		Random generator = new Random();
 		// generate a random integer from 0 to 899, then add 100
 		int randomNPA = generator.nextInt(900) + 100;
-		NPA = Integer.toString(randomNPA);
-		//NPA = "518";
+		//NPA = Integer.toString(randomNPA);
+		NPA = "281";
 		System.out.println("NPA value :" + NPA);
 		NumsPage.tbx_NPA.clear();
 		NumsPage.tbx_NPA.sendKeys(NPA);
 
 		System.out.println("Enter NXX value :");
 		int randomNXX = generator.nextInt(900) + 100;
-	    //NXX = "861";
-		NXX = Integer.toString(randomNXX);
+	    NXX = "504";
+		//NXX = Integer.toString(randomNXX);
 		System.out.println("NXX value :" + NXX);
 		NumsPage.tbx_NXX.clear();
 		NumsPage.tbx_NXX.sendKeys(NXX);
@@ -309,8 +321,8 @@ public class YourApplicationUserSteps extends YourApplicationSteps {
 	public void setTNValues() throws IOException, InterruptedException {
 		originalTNs = new ArrayList<>();
 		long s = Long.parseLong(TN);
-		for (int row = 1; row <= loop + 1; row++) {// nnk
-			 //for (int row = 1; row <= 10; row++) {
+		//for (int row = 1; row <= loop + 1; row++) {// nnk
+			 for (int row = 1; row <= 10; row++) {
 
 			originalTNs.add(s++);
 		}
@@ -367,7 +379,6 @@ public class YourApplicationUserSteps extends YourApplicationSteps {
 				TAILoginPage.btn_Execute.click();
 				WaitForPageToLoad(360000);
 				}			
-			waitForPageToLoad();
 
 			(new WebDriverWait(getDriver(), 9000000)).until(new ExpectedCondition<WebElement>() {
 				@Override
@@ -403,20 +414,19 @@ public class YourApplicationUserSteps extends YourApplicationSteps {
 				String actualXpath_carrierName = TAILoginPage.BeforeXpath + row + TAILoginPage.CarrierNameXpath;
 				String CarrierName = getDriver().findElement(By.xpath(actualXpath_carrierName)).getText();
 				System.out.println("Carrier Name :" + CarrierName);
-
 				if (Portable.equals("Y") && Wireless.equals("N") && InternalPort.equals("N")) {
 					reader.setCellData(sheetName, "TelephoneNumber", sheetrow, TelePhoneNo);
 					reader.setCellData(sheetName, "Portable", sheetrow, Portable);
 					reader.setCellData(sheetName, "Wireless", sheetrow, Wireless);
 					reader.setCellData(sheetName, "InternalPort", sheetrow, InternalPort);
 					reader.setCellData(sheetName, "CarrierName", sheetrow, CarrierName);
+					
 				} else {
 					sheetrow = sheetrow - 1;
 				}
 				sheetrow++;
 				System.out.println("sheet row number :" + sheetrow);
 			}
-
 		}
 
 		System.out.println("**************************************************");
@@ -566,8 +576,8 @@ public class YourApplicationUserSteps extends YourApplicationSteps {
 				TAILoginPage.tbx_TN.sendKeys(s1 + "\n");
 			}
 			try {
-				TAILoginPage.btn_Execute.click();
 				WaitForPageToLoad(360000);
+				TAILoginPage.btn_Execute.click();
 			} catch (org.openqa.selenium.TimeoutException e) {
 				e.printStackTrace();
 				System.out.println("Time out exception ");
@@ -575,7 +585,6 @@ public class YourApplicationUserSteps extends YourApplicationSteps {
 				WaitForPageToLoad(360000);
 				}
 			
-			waitForPageToLoad();
 			(new WebDriverWait(getDriver(), 900000)).until(new ExpectedCondition<WebElement>() {
 				@Override
 				public WebElement apply(WebDriver d) {
@@ -630,17 +639,47 @@ public class YourApplicationUserSteps extends YourApplicationSteps {
 		System.out.println("**************************************************");
 	}
 
+	
+	public void copysheet() throws IOException {
+		File source=new File(System.getProperty("user.dir") + "//src//test//resources//TNData.xlsx");
+		String det=System.getProperty("user.dir") + "//src//test//resources//features//copy";
+		FileUtils.copyFileToDirectory(source, new File(det));
+
+		File file = new File(det+"//TNData.xlsx");
+		Random generator = new Random(); 
+		int randNo = generator.nextInt(100);
+		copiedsheetName = "TNData" + Integer.toString(randNo);
+		System.out.println("################## copiedsheetName" + copiedsheetName + "##################");
+        File newFile = new File(det+"//"+copiedsheetName+".xlsx");
+        if(file.renameTo(newFile)){
+            System.out.println("File move success");;
+        }else{
+            System.out.println("File move failed");
+        }
+        File sharedsrc = new File(det+"//"+copiedsheetName+".xlsx");
+
+        try {
+			FileUtils.copyFileToDirectory(sharedsrc, new File(shareddirectorypath));
+			System.out.println("file copied to shared directory");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	@Step
-	public void SendEmailhavingOrderDetails() {
-		
-		Environment currrentEnv = currentEnvironment;
-		System.out.println("Test Environment is "+ currrentEnv.toString());
-		String testEnv = currrentEnv.toString();
-		DateFormat dfobj = new SimpleDateFormat("MM/dd/yyyy");
+	public void SendEmailhavingOrderDetails1() throws Exception {
+
+        Environment currrentEnv = currentEnvironment;
+        System.out.println("Test Environment is "+ currrentEnv.toString());
+        String testEnv = currrentEnv.toString();
+
+		SimpleDateFormat sdobj = new SimpleDateFormat("MM/dd/yyyy '@' hh:mm aa z");
 
 		Date dateobj = new Date();
 
-		System.out.println(dfobj.format(dateobj));
+		sdobj.setTimeZone(TimeZone.getTimeZone("IST"));
+
+		System.out.println(sdobj.format(dateobj));
 
 		System.out.println("Sending Order Details in email...");
 
@@ -650,58 +689,88 @@ public class YourApplicationUserSteps extends YourApplicationSteps {
 
 		Session session = Session.getDefaultInstance(props, null);
 
-		String from = "nnanda.kumar@centurylink.com";
+		String from="nnanda.kumar@centurylink.com";
 
-		String subject = "Bulk TNs data List_"+testEnv+"_" + dfobj.format(dateobj);
+		String subject = "Bulk TNs data List_"+" "+testEnv+"_" + sdobj.format(dateobj);
 
 		Message msg = new MimeMessage(session);
 
-		try {
+		try {       
 
 			msg.setFrom(new InternetAddress(from));
-			msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(
-			"nnanda.kumar@CenturyLink.com, Praveen.K.Chinni@centurylink.com, Suman.Banka@centurylink.com, Dhilliswararao.Seepana@centurylink.com,yelena.lapichev@centurylink.com, suma.pujari@centurylink.com, Keith.Lamle@CenturyLink.com"));
-			//msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse("nnanda.kumar@CenturyLink.com"));
-			msg.setSubject(subject);
-			BodyPart msgBodyPart = new MimeBodyPart();
-			String test = "Please find the attachement for Portable Telephone number details... " + "\n"
-					+ "Refer the sheet with name ::" + " ' " + sheetName + " '"
-					+ ", Number of Portable TNs in the sheet is[" + totalTNS + "]";
-			msgBodyPart.setText(test);
-			Multipart multipart = new MimeMultipart();
-			multipart.addBodyPart(msgBodyPart);
+			msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse("nnanda.kumar@centurylink.com"));
 
-			// Part two is attachment
-			msgBodyPart = new MimeBodyPart();
-			String filename = System.getProperty("user.dir") + "//src//test//resources//TNData.xlsx";
+			msg.setSubject(subject);
+			
+			Multipart multipart = new MimeMultipart(); 
+			// Create the attachment part
+			BodyPart attachmentBodyPart = new MimeBodyPart();
+			String filename = System.getProperty("user.dir") + "//src//test//resources//features//copy//"+copiedsheetName+".xlsx";
 			DataSource source = new FileDataSource(filename);
-			msgBodyPart.setDataHandler(new DataHandler(source));
-			msgBodyPart.setFileName("TN_DataList.xlsx");
-			multipart.addBodyPart(msgBodyPart);
+			attachmentBodyPart.setDataHandler(new DataHandler(source));
+			attachmentBodyPart.setFileName(copiedsheetName+".xlsx");
+		
+			multipart.addBodyPart(attachmentBodyPart); //3
+			//msg.setContent(multipart);
+			BodyPart htmlBodyPart = new MimeBodyPart(); //4
+
+
+			String htmlText = "<html>\n" +
+
+	                            "<Head></head>\n"+
+
+	                            "<body>\n"+
+	                            
+
+	                            "<pr>Hi All,</pr>\n"+
+
+	                            "<br><br>\n"+
+
+	                            "<pr>Please find the attachement for Portable Telephone number details. \n </pr> \n"+
+	                            
+								"<br>\n"+
+								
+	                           // "<pr>\n Refer the sheet with name : "+sheetName+". \n </pr> \n"+
+	                            
+								"<br>\n"+
+	                            
+	                            "<pr>\n Number of Portable TNs in the sheet is ["	+totalTNS + "]</pr> \n"+
+	                            
+								"<br>\n"+
+								
+								"<pr> \n The Same sheet is copied to below shared directory.</pr> \n"+
+	                            
+	                            "<pr>\n  Shared directory Path: "+ shareddirectorypath +" </pr> \n"+
+	                      
+								"<br>\n"+
+								
+								"<br>\n"+
+								
+								"<br>\n"+
+
+	                            "<pr>Regards,</pr>\n"+
+
+	                            "<br>\n"+
+
+	                            "<pr>\n"+"Nanda Kumar"+"</pr>\n"+
+	                            
+	                            
+
+	                            "</body>\n"+
+
+	                            "</html>";                         
+
+			htmlBodyPart.setContent(htmlText, "text/html");
+			multipart.addBodyPart(htmlBodyPart);
 			msg.setContent(multipart);
 			Transport.send(msg);
-			System.out.println("Sent email successfully....");
+
+			System.out.println("Sent message successfully....");
 
 		} catch (MessagingException e) {
 			throw new RuntimeException(e);
 		}
-	}
 
-	public void waitForPageToLoad() {
-		String pageLoadStatus;
-		do {
-
-			JavascriptExecutor js = (JavascriptExecutor) getDriver();
-
-			pageLoadStatus = (String) js.executeScript("return document.readyState");
-
-			System.out.print(".");
-
-		} while (!pageLoadStatus.equals("complete"));
-
-		System.out.println();
-
-		System.out.println("Page Loaded.");
 
 	}
 }
